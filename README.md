@@ -131,7 +131,7 @@ In general:
 
 ### Test endpoints API
 
-#### Curl
+#### Curl Post Request
 
 `Request`
 ```bash
@@ -199,6 +199,6 @@ Content-Length: 532
 }
 ```
 
-#### PostMan
+#### PostMan Collection
 - Please see the weather_service_project.postman_collection.json file.
 
