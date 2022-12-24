@@ -16,6 +16,8 @@ RUN CGO_ENABLED=0 GOOS=linux \
 FROM scratch
 COPY --from=builder app/config /config
 COPY --from=builder /bin/app /app
+COPY --from=builder app/index.html /index.html
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+WORKDIR /
 
 CMD ["/app"]
