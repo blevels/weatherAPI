@@ -3,6 +3,7 @@ package handler
 
 import (
 	"encoding/json"
+	"html/template"
 	"net/http"
 
 	"github.com/blevels/weatherAPI/adapter/api/response"
@@ -35,14 +36,32 @@ func NewGetWeatherHandler(uc usecase.GetWeatherUseCase, log logger.Logger) GetWe
 // Handle handles http request
 func (g GetWeatherHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	var reqData GetWeatherRequest
-	if err := json.NewDecoder(r.Body).Decode(&reqData); err != nil {
+
+	r.ParseForm()
+	err := r.ParseForm()
+	if err != nil {
 		g.log.WithFields(logger.Fields{
 			"error":       err.Error(),
 			"http_status": http.StatusBadRequest,
-		}).Errorf("failed to marshal message")
+		}).Errorf("failed to parse form message")
+	}
 
-		response.NewError(err, http.StatusBadRequest).Send(w)
-		return
+	hasKey := r.PostForm.Has("submit")
+	if hasKey {
+		reqData = GetWeatherRequest{
+			Longitude: r.FormValue("longitude"),
+			Latitude:  r.FormValue("latitude"),
+		}
+	} else {
+		if err := json.NewDecoder(r.Body).Decode(&reqData); err != nil {
+			g.log.WithFields(logger.Fields{
+				"error":       err.Error(),
+				"http_status": http.StatusBadRequest,
+			}).Errorf("failed to marshal message")
+
+			response.NewError(err, http.StatusBadRequest).Send(w)
+			return
+		}
 	}
 	defer r.Body.Close()
 
@@ -57,6 +76,22 @@ func (g GetWeatherHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		}).Errorf("error when creating a new transfer")
 
 		response.NewError(err, http.StatusInternalServerError).Send(w)
+		return
+	}
+
+	if r.Method == http.MethodPost {
+		pageTmplt = template.Must(template.New("result").Funcs(funcMap).ParseFiles("index.html"))
+		weather := WeatherInfo{
+			Headline: "Weather Service Information",
+			Body:     "Please review the weather information provided below.",
+			Success:  true,
+			Data:     output,
+		}
+
+		err := pageTmplt.Execute(w, weather)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	}
 

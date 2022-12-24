@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{{define "form"}}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Service Project</title>
+</head>
+<body>
+    <h1>{{ .Headline }}</h1>
+    <p> {{ .Body }} </p>
+
+    <form method="POST" action="/v1/weather">
+        <label>Longitude:</label><br />
+        <input style="margin-bottom: 10px" type="text" name="longitude"><br />
+        <label>Latitude:</label><br />
+        <input type="text" name="latitude"><br />
+        <input style="margin: 15px 0px 0px 0px" type="submit" name="submit">
+    </form>
+</body>
+</html>
+{{end}}
+{{define "result"}}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Service Project</title>
+</head>
+<body>
+<h1>{{ .Headline }}</h1>
+<p> {{ .Body }} </p>
+<p><strong>Raw Data:</strong> {{ .Data.Weather }}</p>
+<p>&nbsp;</p>
+<table>
+    <tr>
+        <td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="font-weight: bold;" colspan="2">Current Weather Conditions</td>
+    </tr>
+    <tr>
+        <td style="width: 100px; font-style: italic">Longitude</td><td>{{ .Data.Weather.coord.lon }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Latitude</td><td>{{ .Data.Weather.coord.lat }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">City</td><td>{{ .Data.Weather.name }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Sunrise</td><td>{{ formatDate .Data.Weather.sys.sunrise }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Sunset</td><td>{{ formatDate .Data.Weather.sys.sunset }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Weather</td><td>{{ wMain .Data.Weather.weather }}</td>
+    </tr>
+    <td style="font-style: italic">Description</td><td>{{ wDescription .Data.Weather.weather }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Temperature</td><td>{{ .Data.Weather.main.temp }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Feels Like</td><td>{{ .Data.Weather.main.feels_like }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Pressure</td><td>{{ .Data.Weather.main.pressure }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Humidity</td><td>{{ .Data.Weather.main.humidity }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Wind Speed</td><td>{{ .Data.Weather.wind.speed }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Wind Gust</td><td>{{ .Data.Weather.wind.gust }}</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="font-weight: bold;" colspan="2">Weather Alerts</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Sender</td><td>{{ .Data.Weather.alerts.sender_name }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Event</td><td>{{ .Data.Weather.alerts.event }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Start</td><td>{{ .Data.Weather.alerts.start }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">End</td><td>{{ .Data.Weather.alerts.end }}</td>
+    </tr>
+    <tr>
+        <td style="font-style: italic">Descript</td><td>{{ .Data.Weather.alerts.description }}</td>
+    </tr>
+</table>
+</body>
+</html>
+{{end}}

@@ -52,9 +52,16 @@ func (h HTTPServer) getWeatherHandler(cfg config.Weather) http.HandlerFunc {
 	return handler.NewGetWeatherHandler(uc, h.logger).Handle
 }
 
+// Page Handler
+func (h HTTPServer) getPageHandler() http.HandlerFunc {
+	return handler.NewGetPageHandler(h.logger).Handle
+}
+
 // Start setup routes and run the application server
 func (h HTTPServer) Start(cfg *config.Config) {
 	h.router.GET("/healthCheck", healthCheck)
+	h.router.GET("/", h.getPageHandler())
+	h.router.POST("/", h.getPageHandler())
 	h.router.POST("/v1/weather", h.getWeatherHandler(cfg.Weather))
 	h.router.SERVE(cfg.Port)
 }
