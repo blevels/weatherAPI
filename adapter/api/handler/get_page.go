@@ -9,7 +9,7 @@ import (
 )
 
 type (
-	// GetWeatherHandler defines the dependencies of the HTTP handler for the use case
+	// GetPageHandler defines the dependencies of the HTTP handler for the use case
 	GetPageHandler struct {
 		log logger.Logger
 	}
@@ -48,7 +48,7 @@ func formatDate(timeFloat float64) string {
 	return time.Unix(int64(timeFloat), int64(0)).Format("Mon, 02 Jan 2006 15:04:05 -0700")
 }
 
-// NewGetWeatherHandler creates new use case handler with its dependencies
+// NewGetPageHandler creates new use case handler with its dependencies
 func NewGetPageHandler(log logger.Logger) GetPageHandler {
 	return GetPageHandler{
 		log: log,

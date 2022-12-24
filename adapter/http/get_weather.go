@@ -33,7 +33,7 @@ func NewApiRequestSender(client HttpGetter, l logger.Logger, cfg config.Weather)
 
 // Send creates the API request to the Open Weather API for the Get Weather use case
 func (r requestSender) Send(_ context.Context, w entity.Weather) (map[string]interface{}, error) {
-	res, err := r.client.Get(fmt.Sprintf(`%s?lat=%s&lon=%s&appid=%s`, r.uri, w.Latitude, w.Longitude, r.apiKey))
+	res, err := r.client.Get(fmt.Sprintf(`%s?lat=%s&lon=%s&appid=%s&units=imperial`, r.uri, w.Latitude, w.Longitude, r.apiKey))
 	if err != nil {
 		r.log.WithFields(logger.Fields{
 			"error": err.Error(),
