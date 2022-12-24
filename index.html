@@ -73,7 +73,7 @@
         <td style="font-style: italic">Wind Speed</td><td>{{ .Data.Weather.wind.speed }} mph</td>
     </tr>
     <tr>
-        <td style="font-style: italic">Wind Gust</td><td>{{ .Data.Weather.wind.gust }} mph</td>
+        <td style="font-style: italic">Wind Gust</td><td>{{ if eq .Data.Weather.wind.gust nil }} 0 {{ else }} {{.Data.Weather.wind.gust }} {{ end }}mph</td>
     </tr>
     <tr>
         <td>&nbsp;</td><td>&nbsp;</td>
