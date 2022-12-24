@@ -60,6 +60,12 @@ The outer layer of the application has its own limitations in this model such as
 - Data is always transferred in a form that is convenient for consumption by the business logic.
 
 ## Project Structure
+### `/index.html`
+Client facing home page of the application using Go templates. The longitude and latitude coordinates can be submitted
+via the form which returns the weather information from the Open Weather API.
+
+- The home page can be accessed via the following url: `http://{{host}}:{{port}}/` ex: http://localhost:3001.
+
 ### `/main.go`
 The main application file initializes the applications configuration and executes a start command for the HTTP Server
 in `infrastructure/httpserver.go`. 
