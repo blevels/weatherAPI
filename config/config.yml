@@ -1,0 +1,13 @@
+app:
+  name: 'weather-project'
+  version: '1.0.0'
+
+http:
+  port: '3001'
+
+log:
+  level: 'debug'
+
+weather:
+  key: 'f9094ec5f81a2b45df4d1da2e1751f42'
+  uri: 'https://api.openweathermap.org/data/2.5/weather'
