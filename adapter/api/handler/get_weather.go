@@ -84,7 +84,7 @@ func (g GetWeatherHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		weather := WeatherInfo{
 			Headline: "Weather Service Information",
 			Body:     "Please review the weather information provided below.",
-			Success:  true,
+			Success:  r.FormValue("alerts"),
 			Data:     output,
 		}
 

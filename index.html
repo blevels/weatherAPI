@@ -5,98 +5,120 @@
     <meta charset="UTF-8">
     <title>Weather Service Project</title>
 </head>
-<body>
-    <h1>{{ .Headline }}</h1>
-    <p> {{ .Body }} </p>
+    <body>
+        <h1>{{ .Headline }}</h1>
+        <p> {{ .Body }} </p>
 
-    <form method="POST" action="/v1/weather">
-        <label>Longitude:</label><br />
-        <input style="margin-bottom: 10px" type="text" name="longitude"><br />
-        <label>Latitude:</label><br />
-        <input type="text" name="latitude"><br />
-        <input style="margin: 15px 0px 0px 0px" type="submit" name="submit">
-    </form>
-</body>
+        <form method="POST" action="/v1/weather">
+            <label>Longitude:</label><br />
+            <input style="margin-bottom: 10px" type="text" name="longitude"><br />
+            <label>Latitude:</label><br />
+            <input type="text" name="latitude"><br />
+            <input style="margin-top: 10px" type="checkbox" name="alerts">&nbsp;Include Alerts<br />
+            <input style="margin: 15px 0px 10px 0px" type="submit" name="submit">
+        </form>
+    </body>
 </html>
 {{end}}
 {{define "result"}}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Weather Service Project</title>
-</head>
-<body>
-<h1>{{ .Headline }}</h1>
-<p> {{ .Body }} </p>
-<p><strong>Raw Data:</strong> {{ .Data.Weather }}</p>
-<p>&nbsp;</p>
-<table>
-    <tr>
-        <td>&nbsp;</td><td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td style="font-weight: bold;" colspan="2">Current Weather Conditions</td>
-    </tr>
-    <tr>
-        <td style="width: 100px; font-style: italic">Longitude</td><td>{{ .Data.Weather.coord.lon }}&deg;</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Latitude</td><td>{{ .Data.Weather.coord.lat }}&deg;</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">City</td><td>{{ .Data.Weather.name }}</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Sunrise</td><td>{{ formatDate .Data.Weather.sys.sunrise }}</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Sunset</td><td>{{ formatDate .Data.Weather.sys.sunset }}</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Weather</td><td>{{ wMain .Data.Weather.weather }}</td>
-    </tr>
-    <td style="font-style: italic">Description</td><td>{{ wDescription .Data.Weather.weather }}</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Temperature</td><td>{{ .Data.Weather.main.temp }}&deg;F</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Feels Like</td><td>{{ .Data.Weather.main.feels_like }}&deg;F</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Pressure</td><td>{{ .Data.Weather.main.pressure }} hPa</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Humidity</td><td>{{ .Data.Weather.main.humidity }}%</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Wind Speed</td><td>{{ .Data.Weather.wind.speed }} mph</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Wind Gust</td><td>{{ if eq .Data.Weather.wind.gust nil }} 0 {{ else }} {{.Data.Weather.wind.gust }} {{ end }}mph</td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td><td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td style="font-weight: bold;" colspan="2">Weather Alerts</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Sender</td><td>{{ .Data.Weather.alerts.sender_name }}</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Event</td><td>{{ .Data.Weather.alerts.event }}</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Start</td><td>{{ .Data.Weather.alerts.start }}</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">End</td><td>{{ .Data.Weather.alerts.end }}</td>
-    </tr>
-    <tr>
-        <td style="font-style: italic">Description</td><td>{{ .Data.Weather.alerts.description }}</td>
-    </tr>
-</table>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Weather Service Project</title>
+    </head>
+    <body>
+        <h1>{{ .Headline }}</h1>
+        <p>{{ .Body }} </p>
+        <table style="width: 40%">
+            <tr>
+                <td style="font-weight: bold;" colspan="2">Current Weather Conditions</td>
+            </tr>
+            <tr>
+                <td style="width: 100px; font-style: italic">Longitude</td><td>{{ .Data.Weather.Coord.lon }}&deg;</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Latitude</td><td>{{ .Data.Weather.Coord.lat }}&deg;</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">City</td><td>{{ .Data.Weather.Name }}</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Sunrise</td><td>{{ formatDate .Data.Weather.Sys.Sunrise }}</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Sunset</td><td>{{ formatDate .Data.Weather.Sys.Sunset }}</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Weather</td><td>{{ wMain .Data.Weather.Weather }}</td>
+            </tr>
+                <td style="font-style: italic">Description</td><td>{{ wDescription .Data.Weather.Weather }}</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Temperature</td><td>{{ .Data.Weather.Main.temp }}&deg;F</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Feels Like</td><td>{{ .Data.Weather.Main.feels_like }}&deg;F</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Pressure</td><td>{{ .Data.Weather.Main.pressure }} hPa</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Humidity</td><td>{{ .Data.Weather.Main.humidity }}%</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Wind Speed</td><td>{{ .Data.Weather.Wind.speed }} mph</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Wind Gust</td><td>{{ if eq .Data.Weather.Wind.gust nil }} 0 {{ else }} {{.Data.Weather.Wind.gust }} {{ end }}mph</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td><td>&nbsp;</td>
+            </tr>
+            {{if eq .Success "on" }}
+            <tr>
+                <td style="font-weight: bold;" colspan="2">Weather Alerts</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Sender</td><td>Nations Weather Service - Swallow Falls</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Event</td><td>Cloudy with a Chance of Meatballs</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Start</td><td>{{ formatDate .Data.Weather.Alerts.Start }}</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">End</td><td>{{ formatDate .Data.Weather.Alerts.End }}</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic; vertical-align: top">Description</td><td>Cloudy with a Chance of Meatballs is a 2009 American computer-animated science fiction comedy film produced by Sony Pictures Animation and loosely based on the 1978 children's book of the same name by Judi and Ron Barrett. The film was written and directed by Phil Lord and Christopher Miller in their directorial debuts, and features the voices of Bill Hader, Anna Faris, James Caan, Andy Samberg, Bruce Campbell, Mr. T, Benjamin Bratt, and Neil Patrick Harris. The film centers around an aspiring inventor named Flint Lockwood who develops, following a series of failed experiments, a machine that can convert water into food. After the machine gains sentience and begins to develop food storms, Flint must stop it in order to save the world.</td>
+            </tr>
+            {{ else }}
+            <tr>
+                <td style="font-weight: bold;" colspan="2">Weather Alerts</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Sender</td><td>{{ .Data.Weather.Alerts.Sender_Name }}</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Event</td><td>{{ .Data.Weather.Alerts.Event }}</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">End</td><td>{{ if eq .Data.Weather.Alerts.Start 0.0 }} {{ else }} {{ .Data.Weather.Alerts.Start }} {{ end }}</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">End</td><td>{{ if eq .Data.Weather.Alerts.End 0.0 }} {{ else }} {{ .Data.Weather.Alerts.End }} {{ end }}</td>
+            </tr>
+            <tr>
+                <td style="font-style: italic">Description</td><td>{{ .Data.Weather.Alerts.Description }}</td>
+            </tr>
+            {{ end }}
+        </table>
+        <table style="width: 40%; margin-top: 25px;">
+            <tr>
+                <td style="width: 100px; font-style: italic; vertical-align: top">Raw Data</td><td>{{ .Data.Weather }}</td>
+            </tr>
+        </table>
+    </body>
 </html>
 {{end}}

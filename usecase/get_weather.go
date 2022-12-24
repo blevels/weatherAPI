@@ -3,8 +3,6 @@ package usecase
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/blevels/weatherAPI/domain/entity"
@@ -23,7 +21,7 @@ type (
 
 	// GetWeatherPresenter Presenter/Output port sends data to the caller
 	GetWeatherPresenter interface {
-		Output(entity.Weather) GetWeatherOutput
+		Output(map[string]interface{}) GetWeatherOutput
 	}
 
 	// GetWeatherInput Input data received by the API
@@ -34,7 +32,7 @@ type (
 
 	// GetWeatherOutput Output data format
 	GetWeatherOutput struct {
-		Weather map[string]interface{}
+		Weather entity.WeatherOutput
 	}
 
 	// GetWeatherInteractor Provides the interfaces between the external layers of the application and the inner layers
@@ -62,15 +60,8 @@ func (g GetWeatherInteractor) Execute(ctx context.Context, i GetWeatherInput) (G
 
 	res, err := g.requester.Send(ctx, entity.Weather(i))
 	if err != nil {
-		return g.pre.Output(entity.Weather{}), err
+		return g.pre.Output(map[string]interface{}{}), err
 	}
 
-	jsonStr, err := json.Marshal(res)
-	if err != nil {
-		fmt.Printf("Error: %s", err.Error())
-	} else {
-		fmt.Println(string(jsonStr))
-	}
-
-	return GetWeatherOutput{Weather: res}, nil
+	return g.pre.Output(res), nil
 }

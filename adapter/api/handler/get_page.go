@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/blevels/weatherAPI/adapter/logger"
+	"github.com/blevels/weatherAPI/domain/entity"
 	"github.com/blevels/weatherAPI/usecase"
 	"html/template"
 	"net/http"
@@ -18,7 +19,7 @@ type (
 type WeatherInfo struct {
 	Headline string
 	Body     string
-	Success  bool
+	Success  string
 	Data     usecase.GetWeatherOutput
 }
 
@@ -32,19 +33,20 @@ var funcMap = template.FuncMap{
 	"wMain":        getWeatherMain,
 }
 
-func getWeatherMain(weather []interface{}) interface{} {
-	d, _ := weather[0].(map[string]interface{})
-	return d["main"]
+func getWeatherMain(w []entity.InnerWeather) string {
+	return w[0].Main
 }
 
-func getWeatherDescription(weather []interface{}) interface{} {
-	d, _ := weather[0].(map[string]interface{})
-	return d["description"]
+func getWeatherDescription(w []entity.InnerWeather) string {
+	return w[0].Description
 }
 
 // Custom function must have only 1 return value, or 1 return value and an error
 func formatDate(timeFloat float64) string {
-	//Define layout for formatting timestamp to string
+	if timeFloat == 0 {
+		return time.Now().Format("Mon, 02 Jan 2006 15:04:05 -0700")
+	}
+
 	return time.Unix(int64(timeFloat), int64(0)).Format("Mon, 02 Jan 2006 15:04:05 -0700")
 }
 
@@ -67,6 +69,4 @@ func (g GetPageHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-
-	http.Error(w, "", http.StatusBadRequest)
 }
